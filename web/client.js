@@ -137,6 +137,7 @@ async function loadLesson(topic) {
       hljs.highlightElement(block);
     });
   }
+  enhanceLessonCodeBlocks();
 }
 
 async function loadDiagram() {
@@ -559,4 +560,61 @@ function updateThemeToggle(theme) {
   themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
   const label = isDark ? 'ライトテーマに切り替え' : 'ダークテーマに切り替え';
   themeToggle.setAttribute('title', label);
+}
+
+function enhanceLessonCodeBlocks() {
+  const preBlocks = lessonEl.querySelectorAll('pre');
+  preBlocks.forEach((pre) => {
+    if (pre.closest('.code-block')) {
+      return;
+    }
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block';
+    pre.parentElement?.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'copy-button';
+    button.textContent = 'コピー';
+    button.setAttribute('aria-label', 'コードをコピー');
+
+    button.addEventListener('click', async () => {
+      const code = pre.innerText;
+      const reset = () => {
+        button.classList.remove('success');
+        button.textContent = 'コピー';
+      };
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(code);
+        } else {
+          fallbackCopy(code);
+        }
+        button.classList.add('success');
+        button.textContent = 'コピー済み';
+      } catch (error) {
+        console.error('Copy failed', error);
+        button.textContent = '失敗';
+      }
+      setTimeout(reset, 1500);
+    });
+
+    wrapper.insertBefore(button, pre);
+  });
+}
+
+function fallbackCopy(text) {
+  const area = document.createElement('textarea');
+  area.value = text;
+  area.setAttribute('readonly', 'true');
+  area.style.position = 'fixed';
+  area.style.top = '-1000px';
+  document.body.appendChild(area);
+  area.select();
+  try {
+    document.execCommand('copy');
+  } finally {
+    document.body.removeChild(area);
+  }
 }

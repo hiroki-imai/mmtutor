@@ -239,8 +239,8 @@ body[data-theme="dark"] #status {
 }
 
 .lesson-content pre {
-  padding: 0.75rem 1rem;
-  margin: 1rem 0;
+  padding: 1.2rem 1rem 1rem;
+  margin: 0;
   background: rgba(15, 23, 42, 0.08);
   overflow-x: auto;
   border-radius: 0.5rem;
@@ -257,6 +257,54 @@ body[data-theme="dark"] #status {
 .lesson-content pre code {
   padding: 0;
   background: transparent;
+}
+
+.lesson-content .code-block {
+  position: relative;
+  margin: 1.2rem 0;
+}
+
+.lesson-content .code-block pre {
+  margin: 0;
+}
+
+.copy-button {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: #1c1e21;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.copy-button:hover {
+  background: rgba(240, 244, 251, 0.95);
+}
+
+.copy-button:active {
+  transform: scale(0.97);
+}
+
+.copy-button.success {
+  background: rgba(18, 128, 92, 0.9);
+  color: #ffffff;
+}
+
+body[data-theme="dark"] .copy-button {
+  background: rgba(57, 71, 94, 0.9);
+  color: #f0f4ff;
+  border: 1px solid rgba(127, 184, 255, 0.4);
+}
+
+body[data-theme="dark"] .copy-button.success {
+  background: rgba(24, 141, 104, 0.95);
 }
 
 .workspace {
@@ -346,9 +394,6 @@ body[data-theme="dark"] .lesson-content blockquote {
   overflow: hidden;
   position: relative;
   outline: none;
-  height: 240px;
-  min-height: 240px;
-  max-height: 240px;
 }
 
 .preview:focus-visible {
