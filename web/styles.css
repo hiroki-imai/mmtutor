@@ -76,6 +76,49 @@ body[data-theme="dark"] .controls span {
   color: rgba(214, 222, 236, 0.9);
 }
 
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.theme-toggle .icon {
+  display: none;
+}
+
+.theme-toggle .icon.sun {
+  display: inline;
+}
+
+.theme-toggle.is-dark .icon.sun {
+  display: none;
+}
+
+.theme-toggle.is-dark .icon.moon {
+  display: inline;
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid rgba(31, 116, 215, 0.5);
+  outline-offset: 2px;
+}
+
+body[data-theme="dark"] .theme-toggle {
+  border-color: rgba(127, 184, 255, 0.4);
+  background: rgba(36, 43, 55, 0.95);
+  color: #f0f4ff;
+}
+
 .control {
   display: inline-flex;
   flex-direction: column;

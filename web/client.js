@@ -9,7 +9,7 @@ const previewEl = document.getElementById('preview');
 const errorBanner = document.getElementById('error-banner');
 const statusEl = document.getElementById('status');
 const topicSelect = document.getElementById('topic-select');
-const themeSelect = document.getElementById('theme-select');
+const themeToggle = document.getElementById('theme-toggle');
 const verticalDivider = document.getElementById('splitter-vertical');
 const horizontalDivider = document.getElementById('splitter-horizontal');
 const layoutEl = document.querySelector('.layout');
@@ -20,12 +20,14 @@ const previewModalBody = document.getElementById('preview-modal-body');
 let currentDiagram = '';
 let lastSaved = '';
 let currentTopic = getTopicFromUrl() ?? 'flow';
-let currentTheme = 'default';
+let currentTheme = 'light';
 let savingTimer = null;
 let renderTimer = null;
 let renderToken = 0;
 let lastRenderedSvg = '';
 let lastFocusBeforeModal = null;
+let prefersDarkMediaQuery;
+const THEME_STORAGE_KEY = 'mmtutor-theme';
 
 const debounce = (fn, delay) => {
   let timer;
@@ -40,15 +42,15 @@ const saveDebounced = debounce(saveDiagram, 300);
 init();
 
 async function init() {
-  if (!lessonEl || !textarea || !topicSelect || !themeSelect || !layoutEl || !editorEl) {
+  if (!lessonEl || !textarea || !topicSelect || !layoutEl || !editorEl || !themeToggle) {
     throw new Error('Required elements are missing in the document.');
   }
-  initializeTheme(currentTheme);
+  initializeTheme(loadInitialTheme());
   await populateTopics();
   topicSelect.value = currentTopic;
-  themeSelect.value = currentTheme;
   attachEventListeners();
   setupSplitters();
+  setupThemeToggle();
   setupPreviewModal();
   await Promise.all([loadLesson(currentTopic), loadDiagram()]);
   updateUrl(currentTopic);
@@ -56,13 +58,28 @@ async function init() {
 }
 
 function initializeTheme(theme) {
-  document.body.dataset.theme = theme;
   currentTheme = theme;
+  document.body.dataset.theme = theme;
   mermaid.initialize({
     startOnLoad: false,
     securityLevel: 'loose',
-    theme
+    theme: theme === 'dark' ? 'dark' : 'default'
   });
+  updateThemeToggle(theme);
+}
+
+function loadInitialTheme() {
+  let stored;
+  try {
+    stored = localStorage.getItem(THEME_STORAGE_KEY);
+  } catch (error) {
+    stored = null;
+  }
+  if (stored === 'dark' || stored === 'light') {
+    return stored;
+  }
+  prefersDarkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  return prefersDarkMediaQuery.matches ? 'dark' : 'light';
 }
 
 function getTopicFromUrl() {
@@ -104,12 +121,6 @@ function attachEventListeners() {
     await fetchLessonAndTemplate(newTopic);
     updateUrl(newTopic);
     await notifyTopicChange(newTopic);
-  });
-
-  themeSelect.addEventListener('change', (event) => {
-    const theme = event.target.value;
-    initializeTheme(theme);
-    renderMermaid(currentDiagram);
   });
 }
 
@@ -489,4 +500,63 @@ function setupPreviewModal() {
   if (!lastRenderedSvg) {
     setPreviewEnabled(false);
   }
+}
+
+function setupThemeToggle() {
+  if (!themeToggle) {
+    return;
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme, true);
+  });
+
+  if (!prefersDarkMediaQuery) {
+    prefersDarkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  }
+
+  const media = prefersDarkMediaQuery;
+  if (media?.addEventListener) {
+    media.addEventListener('change', handleSystemThemeChange);
+  } else if (media?.addListener) {
+    media.addListener(handleSystemThemeChange);
+  }
+
+  updateThemeToggle(currentTheme);
+}
+
+function handleSystemThemeChange(event) {
+  let stored = null;
+  try {
+    stored = localStorage.getItem(THEME_STORAGE_KEY);
+  } catch (error) {
+    stored = null;
+  }
+  if (stored === 'dark' || stored === 'light') {
+    return;
+  }
+  const nextTheme = event.matches ? 'dark' : 'light';
+  setTheme(nextTheme, false);
+}
+
+function setTheme(theme, persist) {
+  initializeTheme(theme);
+  renderMermaid(currentDiagram);
+  if (persist) {
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch (error) {
+      // ignore storage errors
+    }
+  }
+}
+
+function updateThemeToggle(theme) {
+  if (!themeToggle) return;
+  const isDark = theme === 'dark';
+  themeToggle.classList.toggle('is-dark', isDark);
+  themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+  const label = isDark ? 'ライトテーマに切り替え' : 'ダークテーマに切り替え';
+  themeToggle.setAttribute('title', label);
 }

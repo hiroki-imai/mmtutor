@@ -18,15 +18,18 @@
       <div class="controls">
         <label class="control">
           <span>教材テーマ</span>
-          <select id="topic-select" aria-label="Mermaid topic"></select>
+          <select id="topic-select" aria-label="教材テーマの選択"></select>
         </label>
-        <label class="control">
-          <span>Theme</span>
-          <select id="theme-select" aria-label="Preview theme">
-            <option value="default">Default</option>
-            <option value="dark">Dark</option>
-          </select>
-        </label>
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          type="button"
+          aria-label="テーマ切替"
+          aria-pressed="false"
+        >
+          <span class="icon sun" aria-hidden="true">☀️</span>
+          <span class="icon moon" aria-hidden="true">🌙</span>
+        </button>
         <span id="status" role="status" aria-live="polite"></span>
       </div>
     </header>
