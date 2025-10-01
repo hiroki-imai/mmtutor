@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mmtutor</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="/static/vendor/highlight-github.min.css">
+  <script src="/static/vendor/mermaid.min.js"></script>
+  <script src="/static/vendor/marked.min.js"></script>
+  <script src="/static/vendor/dompurify.min.js"></script>
+  <script src="/static/vendor/highlight.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="branding">mmtutor</div>
+      <div class="controls">
+        <label class="control">
+          <span>教材テーマ</span>
+          <select id="topic-select" aria-label="Mermaid topic"></select>
+        </label>
+        <label class="control">
+          <span>Theme</span>
+          <select id="theme-select" aria-label="Preview theme">
+            <option value="default">Default</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+        <span id="status" role="status" aria-live="polite"></span>
+      </div>
+    </header>
+    <main class="layout">
+      <section class="pane lesson" aria-labelledby="lesson-heading">
+        <h2 id="lesson-heading" class="visually-hidden">Lesson</h2>
+        <article id="lesson-content" class="lesson-content"></article>
+      </section>
+      <div
+        class="divider vertical"
+        id="splitter-vertical"
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Resize lesson and workspace"
+        tabindex="0"
+      ></div>
+      <section class="pane workspace" aria-labelledby="workspace-heading">
+        <h2 id="workspace-heading" class="visually-hidden">Workspace</h2>
+        <div class="editor">
+          <div class="editor-top">
+            <textarea id="diagram-input" spellcheck="false" aria-label="Mermaid source"></textarea>
+            <div id="error-banner" role="alert" hidden></div>
+          </div>
+          <div
+            class="divider horizontal"
+            id="splitter-horizontal"
+            role="separator"
+            aria-orientation="horizontal"
+            aria-label="Resize editor and preview"
+            tabindex="0"
+          ></div>
+          <div
+            id="preview"
+            class="preview"
+            aria-live="polite"
+            role="button"
+            tabindex="0"
+            aria-label="Open preview in larger view"
+          ></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div id="preview-modal" class="preview-modal" hidden>
+    <div class="preview-modal__backdrop" data-modal-dismiss></div>
+    <div class="preview-modal__dialog" role="dialog" aria-modal="true" aria-label="Diagram preview">
+      <button type="button" class="preview-modal__close" data-modal-dismiss aria-label="Close preview">×</button>
+      <div id="preview-modal-body" class="preview-modal__body"></div>
+    </div>
+  </div>
+  <script type="module" src="/static/client.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+classDiagram
+  class Order {
+    +id: string
+    +total(): number
+  }
+  Order "1" *-- "many" LineItem

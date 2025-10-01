@@ -1,0 +1,36 @@
+{
+  "name": "@asia-quest/mmtutor",
+  "version": "0.1.0",
+  "description": "Mermaid tutor with live preview",
+  "type": "module",
+  "bin": {
+    "mmtutor": "dist/cli.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run build && npm run prepare:vendor",
+    "prepare:vendor": "node scripts/prepare-vendor.mjs",
+    "dev": "tsx src/cli.ts"
+  },
+  "dependencies": {
+    "chokidar": "^3.6.0",
+    "commander": "^12.1.0",
+    "debug": "^4.3.4",
+    "dompurify": "3.0.11",
+    "express": "^4.19.2",
+    "highlight.js": "11.9.0",
+    "marked": "9.1.6",
+    "mermaid": "10.9.1",
+    "open": "^10.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.30",
+    "esbuild": "^0.21.5",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.5"
+  }
+}
