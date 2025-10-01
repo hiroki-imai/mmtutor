@@ -181,6 +181,7 @@ async function saveDiagram(content) {
       throw new Error('Failed to save');
     }
     lastSaved = normalized;
+    currentDiagram = normalized;
     setStatus('Saved');
   } catch (error) {
     console.error(error);
@@ -218,6 +219,7 @@ function openEventStream() {
     try {
       const payload = JSON.parse(event.data);
       if (typeof payload.content !== 'string') return;
+      if (payload.content === lastSaved) return;
       if (payload.content === textarea.value) return;
       currentDiagram = payload.content;
       textarea.value = payload.content;
