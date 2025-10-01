@@ -1,7 +1,12 @@
-# Gantt Chart（計画の共有）
-目的：開発フェーズの開始日と依存関係を示し、スケジュールの共通認識を作る。
+# ガントチャート入門
 
-## 最小雛形
+## 目的
+- 日付と期間を指定する基本構文を操作し、タスクの依存関係を視覚的に確認する。
+- 指示どおりに `playground.mmd` を差し替えて、スケジュールがどう変化するかを理解する。
+
+## スタートコード
+以下を `playground.mmd` に貼り付けて保存してください。
+
 ```mermaid
 gantt
   dateFormat  YYYY-MM-DD
@@ -10,16 +15,65 @@ gantt
   Test      :after a1, 2d
 ```
 
-## よく使う
-- 日付フォーマット：`dateFormat YYYY-MM-DD`
-- タスク構文：`ラベル :id, 開始日, 期間`
-- 依存関係：`after` を使って前タスクに連結
-- セクション分け：`section 名前` でフェーズを整理
+---
 
-## 演習
-1. `Review` タスクを `Test` の後に 1 日で追加しよう。
-2. 新しいセクション `Deploy` を作り、`Release :milestone, 2025-10-10, 0d` を追加してみる。
+### ハンズオン1: タスクにリソース名を付ける
+1. 上記コードを次の内容に置き換えてください。タスクの後ろに `, Alice` などの担当者を追加します。
 
-## 注意
-- 期間は `3d` や `1w` のように単位を忘れない。
-- 依存の循環が発生すると描画できないので順序を確認する。
+```mermaid
+gantt
+  dateFormat  YYYY-MM-DD
+  section Dev
+  Impl      :a1, 2025-10-01, 3d, Alice
+  Test      :after a1, 2d, Bob
+```
+
+2. プレビューで担当者名が括弧付きで表示されることを確認しましょう。
+
+---
+
+### ハンズオン2: 新しいセクションを追加する
+1. コードを以下に置き換え、`QA` セクションとタスクを増やします。
+
+```mermaid
+gantt
+  dateFormat  YYYY-MM-DD
+  section Dev
+  Impl      :a1, 2025-10-01, 3d, Alice
+  Test      :after a1, 2d, Bob
+
+  section QA
+  Prepare   :a2, after a1, 1d, Carol
+  Execute   :after a2, 2d, Dave
+```
+
+2. ガントチャートに新しいセクションとタスクが表示されることを確認しましょう。
+
+---
+
+### ハンズオン3: マイルストーンを追加する
+1. 最後に以下のコードへ置き換え、リリース日をマイルストーンで表現します。
+
+```mermaid
+gantt
+  dateFormat  YYYY-MM-DD
+  section Dev
+  Impl      :a1, 2025-10-01, 3d, Alice
+  Test      :after a1, 2d, Bob
+
+  section QA
+  Prepare   :a2, after a1, 1d, Carol
+  Execute   :after a2, 2d, Dave
+
+  section Release
+  Launch    :milestone, 2025-10-08, 0d, Team
+```
+
+2. `Launch` がダイヤアイコンで表示されることを確認してください。
+
+---
+
+## 振り返り
+- `dateFormat` はチャート全体のフォーマットを決める。
+- タスクのラベル末尾に担当者を記載できる（複数の場合はカンマ区切り）。
+- `:milestone` を付けると期間ゼロのマイルストーンとして描画される。
