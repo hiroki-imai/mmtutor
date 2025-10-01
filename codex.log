@@ -1,0 +1,36 @@
+# codex session log
+
+## 1. Repository initialization and scaffolding
+- Created project layout based on AGENTS.md specification (package.json, tsconfig.json, src/, web/, lessons/, templates/, scripts/).
+- Added TypeScript source files: cli, server, watcher, lessons metadata, shared types.
+- Implemented web frontend (index.html, styles.css, client.js) including SSE hookup, textarea editor, Mermaid rendering, theme/topic controls.
+- Authored 12 lesson markdown files and corresponding Mermaid templates.
+- Wrote scripts/prepare-vendor.mjs and scripts/highlight-entry.mjs to bundle and copy browser vendors (mermaid, marked, DOMPurify, highlight.js).
+- Ran `npm install` (after dependency adjustments) which triggered `build` and vendor preparation, bundling highlight.js via esbuild.
+- Added README.md with usage instructions (initial CLI-oriented version).
+- Verified TypeScript build output with `npm run build`.
+
+## 2. Functional enhancements & fixes
+- Normalized newline handling in web/client.js for Mermaid rendering and saving (fixing Quadrant chart lexical error).
+- Improved lesson typography and theme-specific styles in web/styles.css.
+- Added draggable splitters for lesson/workspace panes and editor/preview areas with pointer + keyboard support; preview becomes non-scrollable fit.
+- Implemented preview modal overlay (click/keyboard to enlarge SVG, dismiss via backdrop/close/ESC) and supporting styles.
+- Adjusted dark theme palette (header gradient, controls, text contrast) for improved readability.
+- Localized topic dropdown and labels to Japanese via updates in src/lessons.ts and web/index.html.
+
+## 3. Tooling and automation
+- Expanded .gitignore to include OS/editor/temp files.
+- Refined scripts/prepare-vendor.mjs to bundle highlight.js with esbuild and copy assets.
+- Ensured modal accessibility, focus management, body scroll lock, and preview enable/disable states in client.js.
+
+## 4. Git repository setup
+- Initialized git repo (`git init`), set main branch, added remote `https://github.com/hiroki-imai/mmtutor.git`.
+- Commit `feat: bootstrap mmtutor MVP` containing initial project implementation.
+- Pushed branch `main` to origin (`git push -u origin main`).
+- Updated README to reflect browser-first workflow; committed as `docs: refresh README for browser workflow` and pushed to remote.
+
+## 5. Current project status
+- Working tree clean (`git status` shows no pending changes).
+- Latest build verified with `npm run build`.
+- Remote `origin/main` contains all changes up to README refresh.
+
