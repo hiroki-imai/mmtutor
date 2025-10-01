@@ -10,6 +10,7 @@ body {
   margin: 0;
   background: #f5f7fa;
   color: #1c1e21;
+  overflow: hidden;
 }
 
 body.modal-open {
@@ -33,6 +34,7 @@ body[data-theme="dark"] .lesson-content a {
 
 #app {
   min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -108,6 +110,8 @@ body[data-theme="dark"] #status {
   display: grid;
   grid-template-columns: minmax(18rem, clamp(30%, var(--lesson-width, 45%), 65%)) var(--divider-size, 6px) minmax(18rem, 1fr);
   min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .pane {
@@ -214,6 +218,7 @@ body[data-theme="dark"] #status {
 
 .workspace {
   padding: 0;
+  overflow: hidden;
 }
 
 .editor {
