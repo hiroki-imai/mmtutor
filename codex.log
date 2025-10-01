@@ -1,36 +1,32 @@
-# codex session log
+# codex 作業ログ
 
-## 1. Repository initialization and scaffolding
-- Created project layout based on AGENTS.md specification (package.json, tsconfig.json, src/, web/, lessons/, templates/, scripts/).
-- Added TypeScript source files: cli, server, watcher, lessons metadata, shared types.
-- Implemented web frontend (index.html, styles.css, client.js) including SSE hookup, textarea editor, Mermaid rendering, theme/topic controls.
-- Authored 12 lesson markdown files and corresponding Mermaid templates.
-- Wrote scripts/prepare-vendor.mjs and scripts/highlight-entry.mjs to bundle and copy browser vendors (mermaid, marked, DOMPurify, highlight.js).
-- Ran `npm install` (after dependency adjustments) which triggered `build` and vendor preparation, bundling highlight.js via esbuild.
-- Added README.md with usage instructions (initial CLI-oriented version).
-- Verified TypeScript build output with `npm run build`.
+## 1. リポジトリ初期化と足場構築
+- AGENTS.md の仕様をもとに `package.json`、`tsconfig.json`、`src/`、`web/`、`lessons/`、`templates/`、`scripts/` などの基本構成を準備。
+- TypeScript で CLI/サーバ/ウォッチャ/教材メタ情報/共通型を実装し、Mermaid プレビュー用のフロントエンド (index.html / styles.css / client.js) を構築。
+- 12 トピック分の教材 Markdown と Mermaid テンプレートを作成。
+- `scripts/prepare-vendor.mjs` と `scripts/highlight-entry.mjs` を追加し、mermaid / marked / DOMPurify / highlight.js をローカル配布できるよう整備 (highlight.js は esbuild でバンドル)。
+- 依存関係をインストール (`npm install`) し、`npm run build` で TypeScript ビルドを確認。
 
-## 2. Functional enhancements & fixes
-- Normalized newline handling in web/client.js for Mermaid rendering and saving (fixing Quadrant chart lexical error).
-- Improved lesson typography and theme-specific styles in web/styles.css.
-- Added draggable splitters for lesson/workspace panes and editor/preview areas with pointer + keyboard support; preview becomes non-scrollable fit.
-- Implemented preview modal overlay (click/keyboard to enlarge SVG, dismiss via backdrop/close/ESC) and supporting styles.
-- Adjusted dark theme palette (header gradient, controls, text contrast) for improved readability.
-- Localized topic dropdown and labels to Japanese via updates in src/lessons.ts and web/index.html.
+## 2. 機能追加・改善
+- web/client.js で改行コードを正規化し、Quadrant Chart の Lexical error を解消。
+- 教材表示のタイポグラフィとダークテーマの配色を調整。
+- レッスン／エディタ／プレビューのリサイズが可能なドラッグハンドルを実装し、キーボード操作にも対応。
+- プレビューをクリックまたは Enter/Space で拡大できるモーダルを追加し、ESC・背景クリックでも閉じられるように設定。
+- HEader を含むダークテーマの配色を再設計して視認性を改善。
+- トピック名とラベルを日本語化（`src/lessons.ts` と `web/index.html`）。
+- README をブラウザ中心のワークフローに刷新。
 
-## 3. Tooling and automation
-- Expanded .gitignore to include OS/editor/temp files.
-- Refined scripts/prepare-vendor.mjs to bundle highlight.js with esbuild and copy assets.
-- Ensured modal accessibility, focus management, body scroll lock, and preview enable/disable states in client.js.
+## 3. ツール・オートメーションまわり
+- `.gitignore` を拡張し、OS／エディタ／ログ／キャッシュ系ファイルを除外しつつ `codex.log` は追跡対象に設定。
+- モーダルのアクセシビリティ（フォーカス制御、ESC、ボディスクロール抑制）とプレビューの有効/無効状態管理を client.js で整備。
 
-## 4. Git repository setup
-- Initialized git repo (`git init`), set main branch, added remote `https://github.com/hiroki-imai/mmtutor.git`.
-- Commit `feat: bootstrap mmtutor MVP` containing initial project implementation.
-- Pushed branch `main` to origin (`git push -u origin main`).
-- Updated README to reflect browser-first workflow; committed as `docs: refresh README for browser workflow` and pushed to remote.
+## 4. Git 操作履歴
+- `git init` → `main` ブランチへリネーム → `origin https://github.com/hiroki-imai/mmtutor.git` を追加。
+- 初回コミット `feat: bootstrap mmtutor MVP` を作成し、`git push -u origin main` でリモート公開。
+- README 更新を `docs: refresh README for browser workflow` としてコミットし、リモート反映。
+- 作業記録 `codex.log` を追加し、`.gitignore` 更新とともに `docs: add codex session log` をコミット＆プッシュ。
 
-## 5. Current project status
-- Working tree clean (`git status` shows no pending changes).
-- Latest build verified with `npm run build`.
-- Remote `origin/main` contains all changes up to README refresh.
-
+## 5. 現在の状態
+- `git status` で作業ツリーはクリーン。
+- 最新ビルドは `npm run build` で成功。
+- リモート `origin/main` には最新コミット (`docs: add codex session log`) まで反映済み。
