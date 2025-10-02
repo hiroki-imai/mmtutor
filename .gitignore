@@ -14,7 +14,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 *.log
-!codex.log
+!agent.log
 .env
 .env.*
 .cache/

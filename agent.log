@@ -1,0 +1,114 @@
+# AI エージェント作業ログ
+
+## 1. リポジトリ初期化と足場構築 (Codex)
+- AGENTS.md の仕様をもとに `package.json`、`tsconfig.json`、`src/`、`web/`、`lessons/`、`templates/`、`scripts/` などの基本構成を準備。
+- TypeScript で CLI/サーバ/ウォッチャ/教材メタ情報/共通型を実装し、Mermaid プレビュー用のフロントエンド (index.html / styles.css / client.js) を構築。
+- 12 トピック分の教材 Markdown と Mermaid テンプレートを作成。
+- `scripts/prepare-vendor.mjs` と `scripts/highlight-entry.mjs` を追加し、mermaid / marked / DOMPurify / highlight.js をローカル配布できるよう整備 (highlight.js は esbuild でバンドル)。
+- 依存関係をインストール (`npm install`) し、`npm run build` で TypeScript ビルドを確認。
+
+## 2. 機能追加・改善 (Codex)
+- web/client.js で改行コードを正規化し、Quadrant Chart の Lexical error を解消。
+- 教材表示のタイポグラフィとダークテーマの配色を調整。
+- レッスン／エディタ／プレビューのリサイズが可能なドラッグハンドルを実装し、キーボード操作にも対応。
+- プレビューをクリックまたは Enter/Space で拡大できるモーダルを追加し、ESC・背景クリックでも閉じられるように設定。
+- HEader を含むダークテーマの配色を再設計して視認性を改善。
+- トピック名とラベルを日本語化（`src/lessons.ts` と `web/index.html`）。
+- README をブラウザ中心のワークフローに刷新。
+
+## 3. ツール・オートメーションまわり (Codex)
+- `.gitignore` を拡張し、OS／エディタ／ログ／キャッシュ系ファイルを除外しつつ `codex.log` は追跡対象に設定。
+- モーダルのアクセシビリティ（フォーカス制御、ESC、ボディスクロール抑制）とプレビューの有効/無効状態管理を client.js で整備。
+
+## 4. Git 操作履歴 (Codex)
+- `git init` → `main` ブランチへリネーム → `origin https://github.com/hiroki-imai/mmtutor.git` を追加。
+- 初回コミット `feat: bootstrap mmtutor MVP` を作成し、`git push -u origin main` でリモート公開。
+- README 更新を `docs: refresh README for browser workflow` としてコミットし、リモート反映。
+- 作業記録 `codex.log` を追加し、`.gitignore` 更新とともに `docs: add codex session log` をコミット＆プッシュ。
+
+## 5. Codex セッションのユーザープロンプト履歴
+1. mmtutor（MVP・Webプレビューのみ）仕様書（AGENTS.md 相当）の提示。
+2. 「AGENTS.md の内容を実装してください。」
+3. 「教材テキストのフォントが読みにくい。見出し・コードブロックなどマークダウンのような表示にして視覚的にわかりやすくしたい。」
+4. 「QuadrantChartで次のエラー　Lexical error on line 3. Unrecognized text. ...ities x-axis Low -> High y-axis Urge ----------------------^」
+5. 「npm run devしたときにctrl+c押しても終了しないんだけどなぜ？」
+6. 「Quadrant Chartでのみ次のエラーが出ています。 "Lexical error on line 3. Unrecognized text. ...ities x-axis Low -> High y-axis Urge ----------------------^"」
+7. 「教材テキストを区切る縦線と入力欄を区切る横線はマウスドラッグで大きさを変えられるようにしてほしい。入力欄が小さい場合がある。」
+8. 「左の教材テキストと右上の入力欄はスクロール可能のままで、プレビュー欄はスクロール不可として画面内に全体が表示できるようにしてください。プレビュー欄をクリックするとsvgが拡大されてポップアップでプレビューされるようにしたい。」
+9. 「ダークテーマにするとヘッダー部分が視覚的に見づらい。色合いを調整してください。」
+10. 「右上のトピックプルダウンの内容を日本語にしてください。「Topic」も別の日本語名にしてください。」
+11. 「CLIツールではなくなったのでREADME.mdが実装と異なる箇所があるので現状に合わせてください。」
+12. 「ここまでのcodexでの作業ログを codex.log として詳細に記述してください。」
+13. 「codex.logを日本語にして」
+14. 「私がCodexに対して入力したプロンプトをすべてcodex.logに残したい」
+15. 「入力欄に入力してる途中に勝手に改行される。図示するプログラムが動くタイミングでなにかイベントが起きているせい？」
+16. 「シーケンス図のテキストのような "loopブロックで包んでみよう" という表現では具体的にどう書けばいいのかが伝わりません。自分で調べて考えてもらうのではなく、vimtutorのように「書いてある通りに変更すれば挙動が可視化できる」ことをコンセプトとして全教材を書き直してください。演習の量と質も向上させてください。また、教材の見出しが英語のままになっています。」
+17. 「テーマは環境で選択されているものをデフォルトとしてライトアイコンとダークアイコンが切り替わる仕様としたい。」
+
+---
+
+## 6. 教材改善（Claude Code - 2025-10-02）
+
+### 教材の学習アプローチ刷新
+- **目的**: 「コピペして終わり」から「具体的な変更で理解する」vimtutor スタイルへ変更
+- **作業内容**:
+  - 全12教材（flow, seq, class, state, er, gantt, pie, git, journey, mind, timeline, quad）を再設計
+  - 各ハンズオンで「このコードをこう変更してください」という具体的な指示に統一
+  - 「目的」セクションを削除（冗長性の解消）
+  - 「playground.mmd」を「右上のエディタ」に変更（ユーザー視点の改善）
+  - 記録表記の統一（例: `B -- No --> A` と `B -->|No| A` の混在を解消）
+  - コードブロックを最小限にし、指示を簡潔化
+- **コミット**: `refactor: redesign all 12 lessons to interactive hands-on style`
+
+### 行番号依存の解消
+- **問題**: 「N行目」という表現がユーザーの編集スタイルに依存
+- **解決**: 全教材で行番号参照をコンテンツベース参照に変更
+  - 例: `2行目の B[Process]` → `B[Process]`
+  - 例: `3行目の後に` → `` `string id`の次の行に ``
+- **影響範囲**: 全12教材ファイル
+- **コミット**: `refactor: replace line number references with content-based references in all lessons`
+
+## 7. UI/UX改善（Claude Code - 2025-10-02）
+
+### レッスンスクロールリセット
+- **実装**: 教材テーマ変更時に左ペインのスクロール位置を先頭にリセット
+- **変更**: `web/client.js` の `fetchLessonAndTemplate()` に `lessonEl.scrollTop = 0` を追加
+
+### プレビューモーダル削除
+- **理由**: ペインサイズを自由に調整できるため、モーダルが不要と判断
+- **作業内容**:
+  - HTML: モーダル要素と `role="button"` などクリック可能属性を削除
+  - CSS: モーダル関連スタイル、`cursor: zoom-in`、`body.modal-open` を削除
+  - JavaScript: `setupPreviewModal()`, `lastRenderedSvg`, `setPreviewEnabled()` など関連コードを削除
+  - 横方向スプリッターの不具合を修正（`.editor-top` を固定サイズから可変サイズに変更、CSS変数使用）
+- **コミット**: `refactor: remove preview modal and add lesson scroll reset`
+
+## 8. Mermaid仕様対応（Claude Code - 2025-10-02）
+
+### 象限図の日本語ラベル問題
+- **問題**: Mermaid 10.9.1 の quadrantChart が日本語（マルチバイト文字）に非対応
+  - 軸ラベル（x-axis / y-axis）で日本語が表示されない
+  - 象限ラベル（quadrant-1〜4）でも同様の問題
+- **解決**:
+  - すべてのラベルを英語に変更（例: `緊急度低 --> 緊急度高` → `Low Urgency --> High Urgency`）
+  - 象限ラベルも英語化（`すぐやる/計画する/後回し/やらない` → `Do Now/Plan/Delegate/Eliminate`）
+  - 記法のポイントと振り返りに「英数字推奨」の注記を追加
+- **コミット**: `fix: use English labels in quadrant chart lesson due to multibyte char limitations`
+
+## 9. プロジェクト管理（Claude Code - 2025-10-02）
+
+### ログファイル更新
+- **変更**: `codex.log` → `agent.log` にリネーム（Codex → Claude Code への移行を反映）
+- **追加内容**: 本セクション（6〜9）の作業履歴を追記
+
+## 10. コミット履歴サマリー（Claude Code - 2025-10-02）
+1. `refactor: redesign all 12 lessons to interactive hands-on style` (36754a7)
+2. `refactor: replace line number references with content-based references in all lessons` (0761a8d)
+3. `refactor: remove preview modal and add lesson scroll reset` (f56d177)
+4. `fix: use English labels in quadrant chart lesson due to multibyte char limitations` (02b2384)
+
+## 11. 現在の状態
+- `git status`: 作業ツリーはクリーン（agent.log のみ未追加）
+- リモート: `origin/main` に最新コミットまで反映済み
+- 全12教材が vimtutor スタイルの実践的ハンズオン形式に統一
+- UI は最小限かつアクセシブルな構成（モーダルなし、スプリッターでサイズ調整可能）
