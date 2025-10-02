@@ -23,7 +23,7 @@ erDiagram
 
 ### ハンズオン1: 属性を追加する
 
-3行目の後に `string name` を追加してください。
+`string id` の次の行に `string name` を追加してください。
 
 プレビューで `USER` エンティティに `name` 属性が表示されます。エンティティには複数の属性を定義できます。
 
@@ -45,7 +45,7 @@ erDiagram
 
 ### ハンズオン3: エンティティ間の関連を追加する
 
-1行目の後に `ORDER ||--|{ ORDER_ITEM : contains` を追加してください。
+`USER ||--o{ ORDER : places` の次の行に `ORDER ||--|{ ORDER_ITEM : contains` を追加してください。
 
 プレビューで `ORDER` から `ORDER_ITEM` への線が表示されます。`||--|{` は1対多（必須）の関連を表します。
 
@@ -53,7 +53,7 @@ erDiagram
 
 ### ハンズオン4: 主キーと外部キーを明記する
 
-各エンティティの属性に `PK` や `FK` を付けます。2行目を `string id PK` に、ORDER の `id` も `string id PK` に変更し、ORDER に `string user_id FK` を追加してください。
+各エンティティの属性に `PK` や `FK` を付けます。USER の `string id` を `string id PK` に、ORDER の `id` も `string id PK` に変更し、ORDER に `string user_id FK` を追加してください。
 
 プレビューで属性の役割が明示されます。`PK`（主キー）、`FK`（外部キー）、`UNIQUE` などの制約を指定できます。
 

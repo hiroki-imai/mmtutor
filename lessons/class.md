@@ -22,7 +22,7 @@ classDiagram
 
 ### ハンズオン1: 可視性修飾子を追加する
 
-2行目の `id: string` を `+id: string` に、3行目の `total(): number` を `+total(): number` に変更してください。
+`id: string` を `+id: string` に、`total(): number` を `+total(): number` に変更してください。
 
 プレビューで `+` マークが表示されます。`+` は public（公開）、`-` は private（非公開）を意味します。
 
@@ -30,7 +30,7 @@ classDiagram
 
 ### ハンズオン2: プライベート属性を追加する
 
-3行目の後に `-status: string` を追加してください。
+`+total(): number` の次の行に `-status: string` を追加してください。
 
 プレビューで `status` が `-` マーク付きで表示されます。可視性修飾子でカプセル化を表現できます。
 

@@ -22,7 +22,7 @@ quadrantChart
 
 ### ハンズオン1: タイトルを追加する
 
-1行目を `quadrantChart title Priority Matrix` に変更してください。
+`quadrantChart` を `quadrantChart title Priority Matrix` に変更してください。
 
 プレビューで図の上にタイトルが表示されます。`title タイトル` でマトリクスのタイトルを付けられます。
 
@@ -30,7 +30,7 @@ quadrantChart
 
 ### ハンズオン2: 軸のラベルを変更する
 
-2行目を `x-axis 緊急度低 --> 緊急度高` に、3行目を `y-axis 重要度低 --> 重要度高` に変更してください。
+`x-axis Low --> High` を `x-axis 緊急度低 --> 緊急度高` に、`y-axis Low --> High` を `y-axis 重要度低 --> 重要度高` に変更してください。
 
 プレビューで軸のラベルが日本語になります。軸のラベルで評価基準を明確にできます。
 
@@ -46,7 +46,7 @@ quadrantChart
 
 ### ハンズオン4: 象限のラベルを追加する
 
-4行目の後に以下を追加してください：
+`"Item A": [0.3, 0.6]` の次の行に以下を追加してください：
 ```mermaid
   quadrant-1 すぐやる
   quadrant-2 計画する

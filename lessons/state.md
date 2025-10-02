@@ -21,7 +21,7 @@ stateDiagram-v2
 
 ### ハンズオン1: 遷移にラベルを付ける
 
-2行目の `Draft --> Published` を `Draft --> Published: approve` に変更してください。
+`Draft --> Published` を `Draft --> Published: approve` に変更してください。
 
 プレビューで矢印に「approve」というラベルが表示されます。`: ラベル` で遷移のトリガーや条件を示せます。
 
@@ -29,7 +29,7 @@ stateDiagram-v2
 
 ### ハンズオン2: 分岐を追加する
 
-2行目の後に `Draft --> Rejected: reject` を追加してください。
+`Draft --> Published: approve` の次の行に `Draft --> Rejected: reject` を追加してください。
 
 プレビューで `Draft` から2つの遷移が出ます。同じ状態から複数の遷移を作ることで、条件分岐を表現できます。
 
@@ -37,7 +37,7 @@ stateDiagram-v2
 
 ### ハンズオン3: 状態を増やして経路を複雑にする
 
-3行目の後に以下の2行を追加してください：
+`Published --> [*]` の前に以下の2行を追加してください：
 ```mermaid
   Rejected --> Draft: revise
   Rejected --> [*]

@@ -22,7 +22,7 @@ sequenceDiagram
 
 ### ハンズオン1: レスポンスを点線にする
 
-4行目の `S->>U: 200 OK` を `S-->>U: 200 OK` に変更してください。
+`S->>U: 200 OK` を `S-->>U: 200 OK` に変更してください。
 
 プレビューでレスポンスの矢印が点線になります。`-->>` は非同期または応答を表す点線矢印です。
 
@@ -30,7 +30,7 @@ sequenceDiagram
 
 ### ハンズオン2: 外部APIを追加する
 
-2行目の後に `participant A as External API` を追加し、さらに4行目の前に以下の2行を挿入してください：
+`participant S as Server` の次の行に `participant A as External API` を追加し、さらに `U->>S: GET /hello` と `S-->>U: 200 OK` の間に以下の2行を挿入してください：
 ```mermaid
   S->>A: GET /lookup
   A-->>S: Data
@@ -50,7 +50,7 @@ sequenceDiagram
 
 ### ハンズオン4: ループで繰り返しを表現する
 
-3行目から6行目までを `loop 2回リトライ` と `end` で囲んでください：
+`U->>S: GET /hello` から `S-->>U: 200 OK` までを `loop 2回リトライ` と `end` で囲んでください：
 ```mermaid
   loop 2回リトライ
     U->>S: GET /hello

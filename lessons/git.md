@@ -28,7 +28,7 @@ gitGraph
 
 ### ハンズオン2: ブランチを作成する
 
-2行目の後に以下の2行を追加してください：
+`commit id: "機能追加"` の次の行に以下の2行を追加してください：
 ```mermaid
   branch feature
   checkout feature

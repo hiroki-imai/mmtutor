@@ -21,7 +21,7 @@ mindmap
 
 ### ハンズオン1: 子ノードを追加する
 
-3行目を以下に変更してください：
+`Planning` を以下に変更してください：
 ```mermaid
     Planning
       Requirements
@@ -34,7 +34,7 @@ mindmap
 
 ### ハンズオン2: 別の枝を広げる
 
-4行目を以下に変更してください：
+`Development` を以下に変更してください：
 ```mermaid
     Development
       Frontend
@@ -47,7 +47,7 @@ mindmap
 
 ### ハンズオン3: さらに深い階層を作る
 
-5〜6行目を以下に変更してください：
+`Frontend` と `Backend` を以下に変更してください：
 ```mermaid
       Frontend
         UI
