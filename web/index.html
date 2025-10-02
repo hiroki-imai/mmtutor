@@ -61,24 +61,10 @@
             aria-label="Resize editor and preview"
             tabindex="0"
           ></div>
-          <div
-            id="preview"
-            class="preview"
-            aria-live="polite"
-            role="button"
-            tabindex="0"
-            aria-label="Open preview in larger view"
-          ></div>
+          <div id="preview" class="preview" aria-live="polite"></div>
         </div>
       </section>
     </main>
-  </div>
-  <div id="preview-modal" class="preview-modal" hidden>
-    <div class="preview-modal__backdrop" data-modal-dismiss></div>
-    <div class="preview-modal__dialog" role="dialog" aria-modal="true" aria-label="Diagram preview">
-      <button type="button" class="preview-modal__close" data-modal-dismiss aria-label="Close preview">×</button>
-      <div id="preview-modal-body" class="preview-modal__body"></div>
-    </div>
   </div>
   <script type="module" src="/static/client.js"></script>
 </body>

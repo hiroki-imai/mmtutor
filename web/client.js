@@ -14,8 +14,6 @@ const verticalDivider = document.getElementById('splitter-vertical');
 const horizontalDivider = document.getElementById('splitter-horizontal');
 const layoutEl = document.querySelector('.layout');
 const editorEl = document.querySelector('.editor');
-const previewModal = document.getElementById('preview-modal');
-const previewModalBody = document.getElementById('preview-modal-body');
 
 let currentDiagram = '';
 let lastSaved = '';
@@ -24,8 +22,6 @@ let currentTheme = 'light';
 let savingTimer = null;
 let renderTimer = null;
 let renderToken = 0;
-let lastRenderedSvg = '';
-let lastFocusBeforeModal = null;
 let prefersDarkMediaQuery;
 const THEME_STORAGE_KEY = 'mmtutor-theme';
 
@@ -51,7 +47,6 @@ async function init() {
   attachEventListeners();
   setupSplitters();
   setupThemeToggle();
-  setupPreviewModal();
   await Promise.all([loadLesson(currentTopic), loadDiagram()]);
   updateUrl(currentTopic);
   openEventStream();
@@ -156,6 +151,7 @@ async function loadDiagram() {
 async function fetchLessonAndTemplate(topic) {
   try {
     await loadLesson(topic);
+    lessonEl.scrollTop = 0;
     const templateRes = await fetch(`/static/templates/${topic}.mmd`);
     if (templateRes.ok) {
       const content = await templateRes.text();
@@ -265,8 +261,6 @@ function renderMermaid(content) {
   if (!content?.trim()) {
     previewEl.innerHTML = '<p class="muted">Nothing to render yet.</p>';
     hideError();
-    lastRenderedSvg = '';
-    setPreviewEnabled(false);
     return;
   }
   const normalized = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
@@ -283,8 +277,6 @@ function renderMermaid(content) {
         bindFunctions(previewEl);
       }
       hideError();
-      lastRenderedSvg = svg;
-      setPreviewEnabled(true);
     }).catch((error) => {
       showError(error);
     });
@@ -299,8 +291,6 @@ function showError(error) {
   errorBanner.textContent = message;
   errorBanner.hidden = false;
   previewEl.innerHTML = '<p class="muted">Preview unavailable due to an error.</p>';
-  setPreviewEnabled(false);
-  lastRenderedSvg = '';
 }
 
 function hideError() {
@@ -312,19 +302,6 @@ function updateUrl(topic) {
   const url = new URL(window.location.href);
   url.searchParams.set('topic', topic);
   window.history.replaceState({}, '', url);
-}
-
-function setPreviewEnabled(enabled) {
-  if (!previewEl) return;
-  if (enabled) {
-    previewEl.classList.remove('preview--empty');
-    previewEl.removeAttribute('aria-disabled');
-    previewEl.setAttribute('tabindex', '0');
-  } else {
-    previewEl.classList.add('preview--empty');
-    previewEl.setAttribute('aria-disabled', 'true');
-    previewEl.setAttribute('tabindex', '-1');
-  }
 }
 
 function setupSplitters() {
@@ -426,81 +403,6 @@ function setupSplitters() {
     root.style.setProperty('--lesson-width', `${clamp(lessonVal, 25, 75)}%`);
     root.style.setProperty('--editor-top-height', `${clamp(editorVal, 25, 80)}%`);
   });
-}
-
-function setupPreviewModal() {
-  if (!previewEl || !previewModal || !previewModalBody) {
-    return;
-  }
-
-  const dismissNodes = previewModal.querySelectorAll('[data-modal-dismiss]');
-
-  const closeModal = () => {
-    if (previewModal.hasAttribute('hidden')) {
-      return;
-    }
-    previewModalBody.innerHTML = '';
-    previewModal.setAttribute('hidden', '');
-    document.body.classList.remove('modal-open');
-    if (lastFocusBeforeModal && typeof lastFocusBeforeModal.focus === 'function') {
-      try {
-        lastFocusBeforeModal.focus();
-      } catch (error) {
-        console.warn('Failed to restore focus', error);
-      }
-    }
-  };
-
-  const openModal = () => {
-    if (!lastRenderedSvg || previewEl.classList.contains('preview--empty')) {
-      return;
-    }
-    lastFocusBeforeModal = document.activeElement;
-    previewModalBody.innerHTML = lastRenderedSvg;
-    previewModal.removeAttribute('hidden');
-    document.body.classList.add('modal-open');
-    const closeButton = previewModal.querySelector('.preview-modal__close');
-    closeButton?.focus();
-  };
-
-  previewEl.addEventListener('click', () => {
-    openModal();
-  });
-
-  previewEl.addEventListener('keydown', (event) => {
-    if ((event.key === 'Enter' || event.key === ' ') && !event.altKey && !event.ctrlKey && !event.metaKey) {
-      event.preventDefault();
-      openModal();
-    }
-  });
-
-  for (const node of dismissNodes) {
-    node.addEventListener('click', closeModal);
-  }
-
-  previewModal.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      closeModal();
-    }
-  });
-
-  previewModal.addEventListener('click', (event) => {
-    if (event.target instanceof HTMLElement && event.target.dataset.modalDismiss !== undefined) {
-      closeModal();
-    }
-  });
-
-  window.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !previewModal.hasAttribute('hidden')) {
-      event.preventDefault();
-      closeModal();
-    }
-  });
-
-  if (!lastRenderedSvg) {
-    setPreviewEnabled(false);
-  }
 }
 
 function setupThemeToggle() {
