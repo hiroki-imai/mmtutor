@@ -14,8 +14,8 @@ quadrantChart
 
 **記法のポイント**:
 - `quadrantChart`: 象限図の宣言
-- `x-axis 左ラベル --> 右ラベル`: 横軸の定義
-- `y-axis 下ラベル --> 上ラベル`: 縦軸の定義
+- `x-axis 左ラベル --> 右ラベル`: 横軸の定義（英数字推奨）
+- `y-axis 下ラベル --> 上ラベル`: 縦軸の定義（英数字推奨）
 - `"項目名": [x座標, y座標]`: データポイント（座標は0〜1）
 
 ---
@@ -30,9 +30,9 @@ quadrantChart
 
 ### ハンズオン2: 軸のラベルを変更する
 
-`x-axis Low --> High` を `x-axis 緊急度低 --> 緊急度高` に、`y-axis Low --> High` を `y-axis 重要度低 --> 重要度高` に変更してください。
+`x-axis Low --> High` を `x-axis Low Urgency --> High Urgency` に、`y-axis Low --> High` を `y-axis Low Importance --> High Importance` に変更してください。
 
-プレビューで軸のラベルが日本語になります。軸のラベルで評価基準を明確にできます。
+プレビューで軸のラベルが詳細になります。軸のラベルで評価基準を明確にできます。
 
 ---
 
@@ -48,18 +48,18 @@ quadrantChart
 
 `"Item A": [0.3, 0.6]` の次の行に以下を追加してください：
 ```mermaid
-  quadrant-1 すぐやる
-  quadrant-2 計画する
-  quadrant-3 後回し
-  quadrant-4 やらない
+  quadrant-1 Do Now
+  quadrant-2 Plan
+  quadrant-3 Delegate
+  quadrant-4 Eliminate
 ```
 
-プレビューで各象限にラベルが表示されます。`quadrant-1` から `quadrant-4` で各象限の意味を説明できます（右上が1、左上が2、左下が3、右下が4）。
+プレビューで各象限にラベルが表示されます。`quadrant-1` から `quadrant-4` で各象限の意味を説明できます（右上が1、左上が2、左下が3、右下が4）。象限ラベルは英数字を使用してください。
 
 ---
 
 ## 振り返り
 - `title タイトル` で図のタイトルを設定
-- `x-axis` と `y-axis` で軸のラベルを定義
+- `x-axis` と `y-axis` で軸のラベルを定義（英数字推奨）
 - `"項目": [x, y]` で座標を指定（0〜1の範囲）
-- `quadrant-1` 〜 `quadrant-4` で各象限にラベルを付けられる
+- `quadrant-1` 〜 `quadrant-4` で各象限にラベルを付けられる（英数字推奨）
