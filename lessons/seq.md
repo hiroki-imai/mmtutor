@@ -1,79 +1,71 @@
 # シーケンス図入門
 
-## 目的
-- `sequenceDiagram` のライフライン、メッセージ、ループを手で編集して把握する。
-- 指示どおりに `playground.mmd` を書き換えるだけで図の変化を確認する。
-
 ## スタートコード
-以下を `playground.mmd` に貼り付けて保存してください。
+右上のエディタが空の場合は、以下をすべて貼り付けて保存してください。
 
 ```mermaid
 sequenceDiagram
   participant U as User
   participant S as Server
   U->>S: GET /hello
-  S-->>U: 200 OK
+  S->>U: 200 OK
 ```
+
+シンプルなリクエスト・レスポンスのシーケンス図です。`participant` で参加者を定義し、`->>` で同期メッセージを表現します。
+
+**記法のポイント**:
+- `sequenceDiagram`: シーケンス図の宣言
+- `participant A as 表示名`: 参加者（ライフライン）の定義
+- `->>`: 実線の矢印（同期メッセージ）
 
 ---
 
-### ハンズオン1: 受信メッセージにノートを付ける
-1. 上記コードを以下に差し替えてください。最後のレスポンスの下にノートを付けています。
+### ハンズオン1: レスポンスを点線にする
 
-```mermaid
-sequenceDiagram
-  participant U as User
-  participant S as Server
-  U->>S: GET /hello
-  S-->>U: 200 OK
-  Note right of U: レスポンスを受け取った
-```
+4行目の `S->>U: 200 OK` を `S-->>U: 200 OK` に変更してください。
 
-2. プレビューでユーザー側にノートが表示されることを確認しましょう。
+プレビューでレスポンスの矢印が点線になります。`-->>` は非同期または応答を表す点線矢印です。
 
 ---
 
-### ハンズオン2: 外部 API への連携を追記する
-1. 上記コード全体を次に置き換えてください。
+### ハンズオン2: 外部APIを追加する
 
+2行目の後に `participant A as External API` を追加し、さらに4行目の前に以下の2行を挿入してください：
 ```mermaid
-sequenceDiagram
-  participant U as User
-  participant S as Server
-  participant A as External API
-  U->>S: GET /hello
   S->>A: GET /lookup
-  A-->>S: 200 OK
-  S-->>U: 200 OK
-  Note right of U: レスポンスを受け取った
+  A-->>S: Data
 ```
 
-2. 新しいライフライン `External API` が追加され、API コールの往復が描かれていることを確認してください。
+プレビューで新しいライフライン `External API` が追加され、Server から API へのやりとりが表示されます。`participant` を追加するだけで参加者を増やせます。
 
 ---
 
-### ハンズオン3: 2 回目のリクエストをループで表現する
-1. 最後に次のコードへ置き換えます。`loop` ブロックを追加しています。
+### ハンズオン3: ノートを付ける
 
+最終行の後に `Note right of U: レスポンス受信` を追加してください。
+
+プレビューで User の右側にノートが表示されます。`Note right of` / `Note left of` / `Note over` で説明を追加できます。
+
+---
+
+### ハンズオン4: ループで繰り返しを表現する
+
+3行目から6行目までを `loop 2回リトライ` と `end` で囲んでください：
 ```mermaid
-sequenceDiagram
-  participant U as User
-  participant S as Server
-  participant A as External API
-  loop 2 requests
+  loop 2回リトライ
     U->>S: GET /hello
     S->>A: GET /lookup
-    A-->>S: 200 OK
+    A-->>S: Data
     S-->>U: 200 OK
   end
-  Note right of U: レスポンスを受け取った
 ```
 
-2. プレビューでループ枠が追加され、同じやり取りが 2 回繰り返されることを確認しましょう。
+プレビューでループ枠が表示され、繰り返し処理が視覚化されます。`loop タイトル ... end` で反復を表現できます。
 
 ---
 
 ## 振り返り
-- `participant` 行を追加するとライフラインが増える。
-- `loop タイトル ... end` で繰り返しを視覚的に示せる。
-- ノートは `Note right of` / `Note left of` で任意のライフラインに添付できる。
+- `->>` は実線（同期）、`-->>` は点線（非同期/応答）
+- `participant` で参加者を追加できる
+- `Note` で補足説明を付けられる
+- `loop ... end` で繰り返し処理を表現できる

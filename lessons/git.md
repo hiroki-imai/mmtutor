@@ -1,90 +1,65 @@
-# Git グラフ入門
-
-## 目的
-- ブランチ作成・チェックアウト・マージの基本操作を Git グラフで可視化する。
-- 指定されたコードを順番に貼り付け、履歴がどのように変わるか体験する。
+# Gitグラフ入門
 
 ## スタートコード
-`playground.mmd` に以下を貼り付けて保存してください。
+右上のエディタが空の場合は、以下をすべて貼り付けて保存してください。
 
 ```mermaid
 gitGraph
   commit
+  commit
+```
+
+シンプルなGitグラフです。コミット履歴を視覚化します。
+
+**記法のポイント**:
+- `gitGraph`: Gitグラフの宣言
+- `commit`: コミットを追加
+- ブランチ操作は `branch`、`checkout`、`merge` で表現
+
+---
+
+### ハンズオン1: コミットにメッセージを付ける
+
+各 `commit` を `commit id: "初期化"` と `commit id: "機能追加"` に変更してください。
+
+プレビューでコミットノードにメッセージが表示されます。`id: "メッセージ"` でコミットに説明を付けられます。
+
+---
+
+### ハンズオン2: ブランチを作成する
+
+2行目の後に以下の2行を追加してください：
+```mermaid
   branch feature
   checkout feature
-  commit
+```
+
+プレビューで `feature` ブランチが main から分岐します。`branch` で新しいブランチを作成し、`checkout` でブランチを切り替えます。
+
+---
+
+### ハンズオン3: ブランチにコミットを追加する
+
+最終行の後に `commit id: "新機能"` を追加してください。
+
+プレビューで `feature` ブランチに新しいコミットが追加されます。`checkout` で切り替えたブランチにコミットが記録されます。
+
+---
+
+### ハンズオン4: ブランチをマージする
+
+最終行の後に以下を追加してください：
+```mermaid
   checkout main
   merge feature
 ```
 
----
-
-### ハンズオン1: コミットメッセージを追加する
-1. 上記コードを次の内容に置き換え、`commit` に説明を付けます。
-
-```mermaid
-gitGraph
-  commit id: "初期化"
-  branch feature
-  checkout feature
-  commit id: "機能実装"
-  checkout main
-  merge feature id: "feature をマージ"
-```
-
-2. 各ノードにラベルが付いていることを確認してください。
-
----
-
-### ハンズオン2: ホットフィックスブランチを追加する
-1. コードを以下の内容に置き換えます。
-
-```mermaid
-gitGraph
-  commit id: "初期化"
-  branch feature
-  checkout feature
-  commit id: "機能実装"
-  checkout main
-  branch hotfix
-  checkout hotfix
-  commit id: "Hotfix"
-  checkout main
-  merge hotfix id: "hotfix マージ"
-  checkout main
-  merge feature id: "feature マージ"
-```
-
-2. `hotfix` ブランチが main から分岐し、マージされる流れを確認してください。
-
----
-
-### ハンズオン3: タグを追加する
-1. 最後に以下のコードへ置き換え、タグを付けてリリースを表現します。
-
-```mermaid
-gitGraph
-  commit id: "初期化"
-  branch feature
-  checkout feature
-  commit id: "機能実装"
-  checkout main
-  branch hotfix
-  checkout hotfix
-  commit id: "Hotfix"
-  checkout main
-  merge hotfix id: "hotfix マージ"
-  tag name: "v0.1"
-  checkout main
-  merge feature id: "feature マージ"
-  tag name: "v0.2"
-```
-
-2. タグ `v0.1` と `v0.2` が表示され、履歴の区切りが視覚化されることを確認しましょう。
+プレビューで `feature` ブランチが `main` にマージされます。`merge` でブランチを統合できます。
 
 ---
 
 ## 振り返り
-- `branch` / `checkout` / `merge` を組み合わせるだけでブランチ戦略を表せる。
-- `commit id: "メッセージ"` でノードにラベルを付けると読みやすい。
-- `tag name: "v1.0"` を適所に挿入するとリリースポイントが明確になる。
+- `commit id: "メッセージ"` でコミットに説明を付けられる
+- `branch 名前` で新しいブランチを作成
+- `checkout 名前` でブランチを切り替え
+- `merge 名前` でブランチをマージ

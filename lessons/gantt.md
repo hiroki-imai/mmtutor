@@ -1,79 +1,63 @@
 # ガントチャート入門
 
-## 目的
-- 日付と期間を指定する基本構文を操作し、タスクの依存関係を視覚的に確認する。
-- 指示どおりに `playground.mmd` を差し替えて、スケジュールがどう変化するかを理解する。
-
 ## スタートコード
-以下を `playground.mmd` に貼り付けて保存してください。
+右上のエディタが空の場合は、以下をすべて貼り付けて保存してください。
 
 ```mermaid
 gantt
-  dateFormat  YYYY-MM-DD
+  dateFormat YYYY-MM-DD
   section Dev
-  Impl      :a1, 2025-10-01, 3d
-  Test      :after a1, 2d
+  Impl :2025-10-01, 3d
 ```
+
+シンプルなガントチャートです。タスクの開始日と期間を指定してスケジュールを視覚化します。
+
+**記法のポイント**:
+- `gantt`: ガントチャートの宣言
+- `dateFormat`: 日付フォーマットの指定
+- `section セクション名`: タスクのグループ
+- `タスク名 :開始日, 期間`: タスクの定義
 
 ---
 
-### ハンズオン1: タスクにリソース名を付ける
-1. 上記コードを次の内容に置き換えてください。タスクの後ろに `, Alice` などの担当者を追加します。
+### ハンズオン1: タスクを追加する
 
-```mermaid
-gantt
-  dateFormat  YYYY-MM-DD
-  section Dev
-  Impl      :a1, 2025-10-01, 3d, Alice
-  Test      :after a1, 2d, Bob
-```
+4行目の後に `Test :after Impl, 2d` を追加してください。
 
-2. プレビューで担当者名が括弧付きで表示されることを確認しましょう。
+プレビューで `Test` タスクが `Impl` の後に続いて表示されます。`after タスク名` で依存関係を表現できます。
 
 ---
 
-### ハンズオン2: 新しいセクションを追加する
-1. コードを以下に置き換え、`QA` セクションとタスクを増やします。
+### ハンズオン2: タスクにIDと担当者を付ける
 
+3行目を `Impl :a1, 2025-10-01, 3d` に、4行目を `Test :after a1, 2d` に変更してください。
+
+タスクにID（`a1`）を付けることで、他のタスクから参照できます。依存関係が明確になります。
+
+---
+
+### ハンズオン3: 新しいセクションを追加する
+
+最終行の後に以下を追加してください：
 ```mermaid
-gantt
-  dateFormat  YYYY-MM-DD
-  section Dev
-  Impl      :a1, 2025-10-01, 3d, Alice
-  Test      :after a1, 2d, Bob
-
   section QA
-  Prepare   :a2, after a1, 1d, Carol
-  Execute   :after a2, 2d, Dave
+  Review :after a1, 2d
 ```
 
-2. ガントチャートに新しいセクションとタスクが表示されることを確認しましょう。
+プレビューで新しいセクション `QA` が表示されます。`section` でタスクをグループ化できます。
 
 ---
 
-### ハンズオン3: マイルストーンを追加する
-1. 最後に以下のコードへ置き換え、リリース日をマイルストーンで表現します。
+### ハンズオン4: マイルストーンを追加する
 
-```mermaid
-gantt
-  dateFormat  YYYY-MM-DD
-  section Dev
-  Impl      :a1, 2025-10-01, 3d, Alice
-  Test      :after a1, 2d, Bob
+最終行の後に `Release :milestone, 2025-10-08, 0d` を追加してください。
 
-  section QA
-  Prepare   :a2, after a1, 1d, Carol
-  Execute   :after a2, 2d, Dave
-
-  section Release
-  Launch    :milestone, 2025-10-08, 0d, Team
-```
-
-2. `Launch` がダイヤアイコンで表示されることを確認してください。
+プレビューでマイルストーンがダイヤ型で表示されます。`milestone` と期間 `0d` で重要な日付を強調できます。
 
 ---
 
 ## 振り返り
-- `dateFormat` はチャート全体のフォーマットを決める。
-- タスクのラベル末尾に担当者を記載できる（複数の場合はカンマ区切り）。
-- `:milestone` を付けると期間ゼロのマイルストーンとして描画される。
+- `after タスク名` または `after ID` でタスクの依存関係を表現
+- `:ID, 開始日, 期間` の形式でタスクを定義
+- `section` でタスクをグループ化
+- `milestone` と期間 `0d` でマイルストーンを表現

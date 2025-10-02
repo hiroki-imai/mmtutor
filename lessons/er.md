@@ -1,100 +1,66 @@
-# ER 図入門
-
-## 目的
-- エンティティ、属性、多重度を手入力で体験し、データ構造の関係性を理解する。
-- 指定されたコードをそのまま `playground.mmd` に貼り付け、図の変化を即座に確認する。
+# ER図入門
 
 ## スタートコード
-以下を `playground.mmd` に貼り付けて保存してください。
+右上のエディタが空の場合は、以下をすべて貼り付けて保存してください。
 
 ```mermaid
 erDiagram
   USER ||--o{ ORDER : places
-  ORDER ||--|{ ORDER_ITEM : contains
   USER {
     string id
   }
 ```
 
----
+シンプルなER図です。エンティティ（四角）と関連（線）でデータベースの構造を表現します。
 
-### ハンズオン1: 属性を付け足す
-1. 上記コードを次の内容に置き換え、`USER` に `email string` を追加します。
-
-```mermaid
-erDiagram
-  USER ||--o{ ORDER : places
-  ORDER ||--|{ ORDER_ITEM : contains
-  USER {
-    string id
-    string email
-  }
-```
-
-2. `USER` のボックスに `email` が表示されることを確認しましょう。
+**記法のポイント**:
+- `erDiagram`: ER図の宣言
+- `エンティティ1 ||--o{ エンティティ2 : ラベル`: 関連の定義
+- `||` は1、`o{` は0以上を表す多重度記号
+- `{ }` 内に属性を記述
 
 ---
 
-### ハンズオン2: PRODUCT エンティティを追加する
-1. さらに以下のコードへ置き換えます。`PRODUCT` を追加し、`ORDER_ITEM` からの多対1を表現しています。
+### ハンズオン1: 属性を追加する
 
-```mermaid
-erDiagram
-  USER ||--o{ ORDER : places
-  ORDER ||--|{ ORDER_ITEM : contains
-  ORDER_ITEM }|--|| PRODUCT : references
+3行目の後に `string name` を追加してください。
 
-  USER {
-    string id
-    string email
-  }
-
-  PRODUCT {
-    string id
-    string name
-  }
-```
-
-2. `PRODUCT` エンティティと `references` の線が表示されることを確認してください。
+プレビューで `USER` エンティティに `name` 属性が表示されます。エンティティには複数の属性を定義できます。
 
 ---
 
-### ハンズオン3: 主キーと外部キーを明記する
-1. 最後に次のコードへ置き換え、属性に `PK` / `FK` / `UNIQUE` を付与します。
+### ハンズオン2: 新しいエンティティを追加する
 
+最終行の後に以下を追加してください：
 ```mermaid
-erDiagram
-  USER ||--o{ ORDER : places
-  ORDER ||--|{ ORDER_ITEM : contains
-  ORDER_ITEM }|--|| PRODUCT : references
-
-  USER {
-    string id PK
-    string email UNIQUE
-  }
-
   ORDER {
-    string id PK
-    string user_id FK
-  }
-
-  ORDER_ITEM {
-    string id PK
-    string order_id FK
-    string product_id FK
-  }
-
-  PRODUCT {
-    string id PK
-    string name
+    string id
+    date order_date
   }
 ```
 
-2. 属性名に役割が明示され、ER 図上でリレーション構造が読みやすくなったことを確認しましょう。
+プレビューで `ORDER` エンティティが詳細表示されます。`エンティティ名 { 型 属性名 }` の形式で属性を定義できます。
+
+---
+
+### ハンズオン3: エンティティ間の関連を追加する
+
+1行目の後に `ORDER ||--|{ ORDER_ITEM : contains` を追加してください。
+
+プレビューで `ORDER` から `ORDER_ITEM` への線が表示されます。`||--|{` は1対多（必須）の関連を表します。
+
+---
+
+### ハンズオン4: 主キーと外部キーを明記する
+
+各エンティティの属性に `PK` や `FK` を付けます。2行目を `string id PK` に、ORDER の `id` も `string id PK` に変更し、ORDER に `string user_id FK` を追加してください。
+
+プレビューで属性の役割が明示されます。`PK`（主キー）、`FK`（外部キー）、`UNIQUE` などの制約を指定できます。
 
 ---
 
 ## 振り返り
-- 多重度は `||`, `o{`, `|{` などの記号で表現する。
-- エンティティの `{ }` 内にデータ型や役割を記載できる。
-- 図はコードを差し替えるだけで更新されるので、ステップごとの変化を確認しよう。
+- `||` は1、`o{` は0以上、`|{` は1以上などの多重度記号
+- `{ }` 内に `型 属性名` の形式で属性を定義
+- `PK`、`FK`、`UNIQUE` で制約を明記できる
+- エンティティ間の線でリレーションシップを表現

@@ -1,85 +1,78 @@
 # マインドマップ入門
 
-## 目的
-- 中心テーマから枝を広げる基本操作を体験し、階層構造を視覚的に理解する。
-- 指示どおりに `playground.mmd` を書き換え、枝の増減を試す。
-
 ## スタートコード
-以下を `playground.mmd` に貼り付けて保存してください。
+右上のエディタが空の場合は、以下をすべて貼り付けて保存してください。
 
 ```mermaid
 mindmap
-  root((Design))
-    UI
-    UX
-      Research
+  root((Project))
+    Planning
+    Development
 ```
+
+シンプルなマインドマップです。中心テーマから枝を広げてアイデアを整理します。
+
+**記法のポイント**:
+- `mindmap`: マインドマップの宣言
+- `root((テキスト))`: 中心テーマ
+- インデントで階層構造を表現（深くなるほど子ノード）
 
 ---
 
 ### ハンズオン1: 子ノードを追加する
-1. コードを次の内容に置き換え、`UI` に子ノードを増やします。
 
+3行目を以下に変更してください：
 ```mermaid
-mindmap
-  root((Design))
-    UI
-      Layout
-      Components
-    UX
-      Research
+    Planning
+      Requirements
+      Design
 ```
 
-2. `UI` の下に 2 つの項目がぶら下がることを確認しましょう。
+プレビューで `Planning` の下に2つの子ノードが追加されます。インデントを深くすることで階層を作れます。
 
 ---
 
-### ハンズオン2: 新しい枝を作る
-1. 以下のコードへ置き換え、`Visual` と `Interaction` の枝を追加します。
+### ハンズオン2: 別の枝を広げる
 
+4行目を以下に変更してください：
 ```mermaid
-mindmap
-  root((Design))
-    UI
-      Layout
-      Components
-      Visual
-    UX
-      Research
-      Interview
-    Interaction
-      Prototyping
-      Testing
+    Development
+      Frontend
+      Backend
 ```
 
-2. 相互作用 (Interaction) の枝が追加され、階層が増えていることを確認してください。
+プレビューで `Development` にも子ノードが追加されます。複数の枝を同時に広げることができます。
 
 ---
 
-### ハンズオン3: サブトピックにメモを付ける
-1. 最後に次のコードへ置き換え、文字列コメントを追加します。
+### ハンズオン3: さらに深い階層を作る
 
+5〜6行目を以下に変更してください：
 ```mermaid
-mindmap
-  root((Design))
-    UI
-      Layout
-      Components
-      Visual
-    UX
-      Research
-      Interview
-    Interaction
-      Prototyping
-        %% 繰り返し改善
-      Testing
+      Frontend
+        UI
+        UX
 ```
 
-2. `Prototyping` の下にコメントが表示されることを確認しましょう。
+プレビューで `Frontend` の下にさらに子ノードが追加されます。階層を深くすることで詳細な構造を表現できます。
+
+---
+
+### ハンズオン4: 新しい枝を追加する
+
+最終行の後に以下を追加してください：
+```mermaid
+    Testing
+      Unit
+      Integration
+```
+
+プレビューで新しい枝 `Testing` が追加されます。マインドマップは自由に枝を追加・拡張できます。
 
 ---
 
 ## 振り返り
-- インデントを増やすだけで子ノードを追加できる。
-- 同じインデントを使えば兄弟ノードになり、レベルを変えると階層が変化する。
-- `%%` でメモを入れられるので、学習用の補足を書いておくと便利。
+- `root((テキスト))` で中心テーマを定義
+- インデントで階層構造を表現（2スペースまたはタブ）
+- 同じインデントレベルは兄弟ノード、深いインデントは子ノード
+- 自由に枝を追加してアイデアを広げられる

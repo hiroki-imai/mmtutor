@@ -1,103 +1,65 @@
 # クラス図入門
 
-## 目的
-- クラス図で属性・メソッド・関連を手入力しながら理解する。
-- 指定された変更をそのまま `playground.mmd` に貼り付け、結果を確認する。
-
 ## スタートコード
-`playground.mmd` が空の場合は以下を貼り付けて保存してください。
+右上のエディタが空の場合は、以下をすべて貼り付けて保存してください。
 
 ```mermaid
 classDiagram
   class Order {
-    +id: string
-    +total(): number
+    id: string
+    total(): number
   }
-  Order "1" *-- "many" LineItem
 ```
+
+シンプルなクラス図です。`class` ブロック内に属性（データ）とメソッド（処理）を記述します。
+
+**記法のポイント**:
+- `classDiagram`: クラス図の宣言
+- `class クラス名 { ... }`: クラスの定義
+- 属性は `名前: 型`、メソッドは `名前(): 戻り値型`
 
 ---
 
-### ハンズオン1: 属性を追加する
-1. 上記コードを次の内容に置き換えて、`Order` にプライベート属性 `-status: string` を追加します。
+### ハンズオン1: 可視性修飾子を追加する
 
-```mermaid
-classDiagram
-  class Order {
-    +id: string
-    +total(): number
-    -status: string
-  }
-  Order "1" *-- "many" LineItem
-```
+2行目の `id: string` を `+id: string` に、3行目の `total(): number` を `+total(): number` に変更してください。
 
-2. プレビューで `status` が Order クラス内部に表示されていることを確認しましょう。
+プレビューで `+` マークが表示されます。`+` は public（公開）、`-` は private（非公開）を意味します。
 
 ---
 
-### ハンズオン2: メソッドと関連を広げる
-1. 次のコードに置き換えてください。`Customer` と `Order` の関連、そして `Order` に `+setStatus(status: string)` を追加します。
+### ハンズオン2: プライベート属性を追加する
 
-```mermaid
-classDiagram
-  class Customer {
-    +id: string
-    +name: string
-  }
+3行目の後に `-status: string` を追加してください。
 
-  class Order {
-    +id: string
-    +total(): number
-    -status: string
-    +setStatus(status: string)
-  }
-
-  Order "1" *-- "many" LineItem
-  Customer "1" --> "many" Order
-```
-
-2. Customer → Order の関連線と新しいメソッドが表示されることを確認してください。
+プレビューで `status` が `-` マーク付きで表示されます。可視性修飾子でカプセル化を表現できます。
 
 ---
 
-### ハンズオン3: 継承とインターフェースを追加する
-1. 最後に以下のコードへ置き換え、サービス層のインターフェースと継承関係を追加します。
+### ハンズオン3: クラス間の関連を追加する
 
+最終行（`}` の後）に `Order "1" *-- "many" LineItem` を追加してください。
+
+プレビューで `Order` から `LineItem` への線が表示されます。`*--` はコンポジション（強い所有関係）を表し、`"1"` と `"many"` は多重度です。
+
+---
+
+### ハンズオン4: 継承関係を追加する
+
+最終行の後に以下を追加してください：
 ```mermaid
-classDiagram
-  class Customer {
-    +id: string
-    +name: string
+  class SpecialOrder {
+    +discount: number
   }
-
-  class OrderService {
-    +findByCustomer(customerId: string): Order[]
-  }
-
-  class OrderServiceImpl {
-    +findByCustomer(customerId: string): Order[]
-  }
-
-  class Order {
-    +id: string
-    +total(): number
-    -status: string
-    +setStatus(status: string)
-  }
-
-  class OrderRepository <<interface>>
-
-  OrderServiceImpl --|> OrderService
-  OrderService ..> OrderRepository : uses
-  Order "1" *-- "many" LineItem
-  Customer "1" --> "many" Order
+  SpecialOrder --|> Order
 ```
 
-2. 継承（`--|>`）と依存（`..>`）の矢印が追加され、インターフェース表記 `<<interface>>` が表示されることを確認しましょう。
+プレビューで `SpecialOrder` が `Order` を継承する矢印が表示されます。`--|>` は継承（is-a関係）を表します。
 
 ---
 
 ## 振り返り
-- クラス内の属性は `+`（公開）、`-`（非公開）などで可視性を表現できる。
-- クラス間の関連や継承は矢印で示し、文字列ラベルで多重度や役割を伝えられる。
-- インターフェースは `<<interface>>` を付与するだけで視覚的に区別できる。
+- `+` は public、`-` は private などの可視性を表現する
+- `*--` はコンポジション、`-->` は関連、`--|>` は継承を表す
+- `"1"` や `"many"` で多重度を指定できる
+- クラス間の関係を矢印で視覚化できる

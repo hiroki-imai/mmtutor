@@ -1,81 +1,71 @@
 # 状態遷移図入門
 
-## 目的
-- 状態図で初期状態・終端状態・遷移ラベルを手入力で理解する。
-- 指示どおりに `playground.mmd` を編集し、遷移経路がどう変わるか確認する。
-
 ## スタートコード
-以下を `playground.mmd` に貼り付けて保存してください。
+右上のエディタが空の場合は、以下をすべて貼り付けて保存してください。
 
 ```mermaid
 stateDiagram-v2
   [*] --> Draft
-  Draft --> Published: approve
+  Draft --> Published
   Published --> [*]
 ```
 
+シンプルな状態遷移図です。`[*]` は開始・終了を表し、矢印で状態間の遷移を表現します。
+
+**記法のポイント**:
+- `stateDiagram-v2`: 状態遷移図の宣言（v2を推奨）
+- `[*]`: 開始状態または終了状態
+- `状態1 --> 状態2`: 状態の遷移
+
 ---
 
-### ハンズオン1: 否認フローを追加する
-1. 上記コード全体を次の内容に置き換えてください。`Rejected` 状態を追加しています。
+### ハンズオン1: 遷移にラベルを付ける
 
+2行目の `Draft --> Published` を `Draft --> Published: approve` に変更してください。
+
+プレビューで矢印に「approve」というラベルが表示されます。`: ラベル` で遷移のトリガーや条件を示せます。
+
+---
+
+### ハンズオン2: 分岐を追加する
+
+2行目の後に `Draft --> Rejected: reject` を追加してください。
+
+プレビューで `Draft` から2つの遷移が出ます。同じ状態から複数の遷移を作ることで、条件分岐を表現できます。
+
+---
+
+### ハンズオン3: 状態を増やして経路を複雑にする
+
+3行目の後に以下の2行を追加してください：
 ```mermaid
-stateDiagram-v2
-  [*] --> Draft
-  Draft --> Published: approve
-  Draft --> Rejected: reject
   Rejected --> Draft: revise
-  Published --> [*]
+  Rejected --> [*]
 ```
 
-2. 「reject」「revise」の遷移が追加されていることを確認しましょう。
+プレビューで `Rejected` から `Draft` への戻り経路と終了への経路が表示されます。複数の状態を組み合わせてワークフローを表現できます。
 
 ---
 
-### ハンズオン2: 公開後のアーカイブを追加する
-1. 次のコードに置き換えてください。`Archived` 状態を終端にしました。
+### ハンズオン4: 複合状態を追加する
 
+最終行の前に以下を挿入してください：
 ```mermaid
-stateDiagram-v2
-  [*] --> Draft
-  Draft --> Published: approve
-  Draft --> Rejected: reject
-  Rejected --> Draft: revise
-  Published --> Archived: archive
-  Archived --> [*]
-```
-
-2. プレビューで `Archived` が終端に向かうことを確認してください。
-
----
-
-### ハンズオン3: 実装中のサブ状態を作る
-1. 最後に以下へ置き換えてください。`state Implementation { ... }` を追加しています。
-
-```mermaid
-stateDiagram-v2
-  [*] --> Draft
-
-  Draft --> Implementation: accept
-  Draft --> Rejected: reject
-  Rejected --> Draft: revise
-
-  state Implementation {
-    [*] --> Coding
-    Coding --> Review: submit
-    Review --> Coding: changes
-    Review --> Published: approve
+  state Review {
+    [*] --> Checking
+    Checking --> Approved
+    Checking --> ChangesRequested
   }
-
-  Published --> Archived: archive
-  Archived --> [*]
+  Published --> Review: request_review
+  Review --> [*]
 ```
 
-2. サブ状態 `Implementation` 内の遷移が表示されることを確認しましょう。
+プレビューで `Review` という複合状態（サブ状態を持つ状態）が表示されます。`state 名 { ... }` で内部に複数の状態を持つ複合状態を表現できます。
 
 ---
 
 ## 振り返り
-- `[*]` は初期／終端の両方で利用できる。
-- 状態名の直後に `: ラベル` を書くと遷移のトリガーが可視化される。
-- `state 名 { ... }` で複合状態を作成し、内部のフローを段階的に表現できる。
+- `[*]` は開始・終了の両方で使える
+- `: ラベル` で遷移のトリガーや条件を表現できる
+- 同じ状態から複数の矢印を出して分岐を表現できる
+- `state 名 { ... }` で複合状態（階層構造）を作れる
